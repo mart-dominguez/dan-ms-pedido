@@ -18,6 +18,8 @@ pipeline {
         stage('Install - Master') {
             steps {
                 bat "./mvnw clean install site -DskipTests"
+                bat "./mvnw pmd:pmd"
+                bat "./mvnw pmd:cpd"
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
