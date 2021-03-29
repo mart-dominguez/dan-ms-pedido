@@ -5,32 +5,19 @@ pipeline {
     stages {
         stage('clean') {
             steps {
-                sh "java -version"
-                sh "./mvnw clean"
+                bat "java -version"
+                bat "./mvnw clean"
             }
         }
         stage('backend tests') {
             steps {
-                configFileProvider([configFile(fileId: 'SAP_MAVEN_NEXUS', variable: 'MAVEN_SETTINGS')]) {
-                    script {
-                        try {
-                            sh "./mvnw test -s $MAVEN_SETTINGS"
-                        } catch (err) {
-                            throw err
-                        } finally {
-                            junit '**/target/surefire-reports/TEST-*.xml'
-                        }
-                    }
-                }
-
+                //bat "./mvnw test"
+                bat "echo 'configurar para ejecutar los tests'"
             }
         }
         stage('Install - Master') {
-            when {
-                branch 'master'
-            }
             steps {
-                sh "./mvnw site -DskipTests"
+                bat "./mvnw clean install site -DskipTests"
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
