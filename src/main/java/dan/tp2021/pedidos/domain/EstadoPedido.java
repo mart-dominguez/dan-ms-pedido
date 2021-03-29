@@ -2,6 +2,16 @@ package dan.tp2021.pedidos.domain;
 
 public class EstadoPedido {
 
+	public EstadoPedido() {
+		
+	}
+	
+	public EstadoPedido(Integer id, String estado) {
+		super();
+		this.id = id;
+		this.estado = estado;
+	}
+	
 	private Integer id;
 	private String estado;
 	public Integer getId() {
