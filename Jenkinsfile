@@ -35,12 +35,6 @@ pipeline {
             }
         }
     }
-    post {
-        always {
-            script {
-                currentBuild.result = currentBuild.currentResult
-            }
-    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
