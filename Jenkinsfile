@@ -21,6 +21,18 @@ pipeline {
                 bat "./mvnw pmd:pmd"
                 bat "./mvnw pmd:cpd"
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                archiveArtifacts artifacts: '**/target/site/**'
+            }
+        }
+        stage('reportes') {
+            steps {
+                publishHTML([allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'target/site',
+                    reportFiles: 'index.html',
+                    reportName: 'Site'
+                ])
             }
         }
     }
