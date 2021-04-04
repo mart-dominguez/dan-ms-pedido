@@ -44,6 +44,11 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jdbc</artifactId>
 		</dependency>
+		<dependency>
+		  	<groupId>frsf.isi.dan</groupId>
+  			<artifactId>memory-repo</artifactId>
+  			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -62,6 +67,26 @@
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>3.14.0</version>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.6</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- attached to Maven test phase -->
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>
@@ -71,6 +96,21 @@
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>3.0.0</version>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-surefire-report-plugin</artifactId>
+			</plugin>
+			<!-- <plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<reportSets>
+				<reportSet>
+					<reports>
+					<report>report</report>
+					</reports>
+				</reportSet>
+				</reportSets>
+			</plugin> -->
 		</plugins>
 	</reporting>
 

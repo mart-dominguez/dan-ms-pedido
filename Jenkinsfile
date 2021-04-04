@@ -4,9 +4,22 @@ pipeline {
     agent any
     stages {
         stage('clean') {
+            when {
+                branch 'master'
+            }
             steps {
                 bat "java -version"
                 bat "./mvnw clean"
+            }
+        }
+        stage('clean-develop') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                bat "java -version"
+                bat "./mvnw clean"
+                bat "echo buildeando develop"
             }
         }
         stage('backend tests') {

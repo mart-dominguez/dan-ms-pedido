@@ -14,19 +14,20 @@ import dan.tp2021.pedidos.service.PedidoService;
 
 @Service
 public class PedidoServiceImpl implements PedidoService {
-
+	
+	@Autowired
+	MaterialService materialSrv;
+	
 	@Autowired
 	PedidoRepository repo;
 	
 	@Autowired
 	ClienteService clienteSrv;
-	
-	@Autowired
-	MaterialService materialSrv;
+
 	
 	@Override
 	public Pedido crearPedido(Pedido p) {
-
+		System.out.println("HOLA PEDIDO "+p);
 		boolean hayStock = p.getDetalle()
 		.stream()
 		.allMatch(dp -> verificarStock(dp.getProducto(),dp.getCantidad()));

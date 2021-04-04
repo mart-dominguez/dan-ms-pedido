@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.invocation.InvocationOnMock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,7 +29,7 @@ import dan.tp2021.pedidos.service.MaterialService;
 import dan.tp2021.pedidos.service.PedidoService;
 
 @SpringBootTest
-class PedidoServiceImplUT {
+class PedidoServiceImplUnitTest {
 	
 	@Autowired
 	PedidoService pedidoService;
@@ -55,12 +57,11 @@ class PedidoServiceImplUT {
 		unPedido.getDetalle().add(d2);
 		unPedido.getDetalle().add(d3);
 		unPedido.setObra(obra);
-		// 	total pedido 40*5 + 80*10 + 450*2 = 200+800+900= 1900
 	}
 
 	@Test
 	void testCrearPedidoConStockSinDeuda() {
-		// siempre hay stock
+//		when(materialService.stockDisponible(p1)).thenReturn(29);
 		when(materialService.stockDisponible(any(Producto.class))).thenReturn(20);
 		// el cliente no tiene deuda
 		when(clienteService.deudaCliente(any(Obra.class))).thenReturn(0.0);
@@ -70,9 +71,11 @@ class PedidoServiceImplUT {
 		when(clienteService.situacionCrediticiaBCRA(any(Obra.class))).thenReturn(1);
 		// retorno el pedido
 		when(pedidoRepo.save(any(Pedido.class))).thenReturn(unPedido);
+//		when(clienteService.deudaCliente(argThat( (Obra o) -> o.getId()>99))).thenReturn(0.0);
 
 		Pedido pedidoResultado = pedidoService.crearPedido(unPedido);
 		assertThat(pedidoResultado.getEstado().getId().equals(1));
+		verify(pedidoRepo,times(1)).save(unPedido);
 	}
 
 	@Test
