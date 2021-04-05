@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Install - Master') {
             steps {
-                bat "./mvnw verify -DskipTests"
+                bat "./mvnw site"
                 bat "./mvnw pmd:pmd"
                 bat "./mvnw pmd:cpd"
             }
