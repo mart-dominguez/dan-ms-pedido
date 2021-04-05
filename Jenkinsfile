@@ -24,7 +24,7 @@ pipeline {
         }
         stage('backend tests') {
             steps {
-                //bat "./mvnw test"
+                bat "./mvnw test"
                 bat "echo 'configurar para ejecutar los tests'"
             }
         }
@@ -46,6 +46,8 @@ pipeline {
                     reportFiles: 'index.html',
                     reportName: 'Site'
                 ])
+                junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: false
+                jacoco
             }
         }
     }
