@@ -33,8 +33,10 @@ pipeline {
                 bat "./mvnw site"
                 bat "./mvnw pmd:pmd"
                 bat "./mvnw pmd:cpd"
-            }
-            post {
+            }            
+        }
+    }
+    post {
                 success{
                     archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
                 }
@@ -51,8 +53,6 @@ pipeline {
                     jacoco ( execPattern: 'target/jacoco.exec')
                 }
             }
-        }
-    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
