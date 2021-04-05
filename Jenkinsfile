@@ -28,31 +28,35 @@ pipeline {
                 bat "echo 'configurar para ejecutar los tests'"
             }
         }
-        stage('Install - Master') {
+        stage('Analisis estatico') {
             steps {
                 bat "./mvnw site"
-                bat "./mvnw pmd:pmd"
-                bat "./mvnw pmd:cpd"
-            }            
+                bat "./mvnw checkstyle:checkstyle pmd:pmd pmd:cpd findbugs:findbugs spotbugs:spotbugs"
+            }
         }
     }
     post {
-                success{
-                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                }
-                always{
-                    archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
-                    publishHTML([allowMissing: false,
+        success{
+            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+        }
+        always{
+            archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
+            publishHTML([allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'target/site',
                         reportFiles: 'index.html',
                         reportName: 'Site'
-                    ])
-                    junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
-                    jacoco ( execPattern: 'target/jacoco.exec')
-                }
-            }
+            ])
+            junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
+            jacoco ( execPattern: 'target/jacoco.exec')
+            recordIssues enabledForFailure: true, tools: [mavenConsole(), java(), javaDoc()]
+            recordIssues enabledForFailure: true, tool: checkStyle()
+            recordIssues enabledForFailure: true, tool: spotBugs()
+            recordIssues enabledForFailure: true, tool: cpd(pattern: '**/target/cpd.xml')
+            recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
+        }
+    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
