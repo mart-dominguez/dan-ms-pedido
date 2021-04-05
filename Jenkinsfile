@@ -24,21 +24,18 @@ pipeline {
         }
         stage('backend tests') {
             steps {
-                bat "./mvnw test"
+                bat "./mvnw verify"
                 bat "echo 'configurar para ejecutar los tests'"
             }
         }
         stage('Install - Master') {
             steps {
-                bat "./mvnw clean install site -DskipTests"
+                bat "./mvnw verify -DskipTests"
                 bat "./mvnw pmd:pmd"
                 bat "./mvnw pmd:cpd"
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                archiveArtifacts artifacts: '**/target/site/**'
             }
-        }
-        stage('reportes') {
-            steps {
+            post {
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
                 publishHTML([allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
@@ -46,7 +43,7 @@ pipeline {
                     reportFiles: 'index.html',
                     reportName: 'Site'
                 ])
-                junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: false
+                junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
                 jacoco ( execPattern: 'target/jacoco.exec')
             }
         }
