@@ -39,6 +39,7 @@ pipeline {
                     archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
                 }
                 always{
+                    archiveArtifacts artifacts: '**/target/site/**', fingerprint: true
                     publishHTML([allowMissing: false,
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
