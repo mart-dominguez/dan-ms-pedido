@@ -35,16 +35,20 @@ pipeline {
                 bat "./mvnw pmd:cpd"
             }
             post {
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                publishHTML([allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'target/site',
-                    reportFiles: 'index.html',
-                    reportName: 'Site'
-                ])
-                junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
-                jacoco ( execPattern: 'target/jacoco.exec')
+                success{
+                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                }
+                always{
+                    publishHTML([allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'target/site',
+                        reportFiles: 'index.html',
+                        reportName: 'Site'
+                    ])
+                    junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
+                    jacoco ( execPattern: 'target/jacoco.exec')
+                }
             }
         }
     }
