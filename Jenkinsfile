@@ -47,7 +47,7 @@ pipeline {
                     reportName: 'Site'
                 ])
                 junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: false
-                jacoco
+                jacoco ( execPattern: 'target/jacoco.exec')
             }
         }
     }
