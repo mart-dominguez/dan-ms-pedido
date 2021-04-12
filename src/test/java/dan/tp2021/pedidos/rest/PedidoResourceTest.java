@@ -30,9 +30,9 @@ import dan.tp2021.pedidos.domain.DetallePedido;
 import dan.tp2021.pedidos.domain.Obra;
 import dan.tp2021.pedidos.domain.Pedido;
 
-@SpringBootTest( 
-		classes = DamPedidosTest.class,
-		webEnvironment = WebEnvironment.RANDOM_PORT)
+//@SpringBootTest( 
+//		classes = DamPedidosTest.class,
+//		webEnvironment = WebEnvironment.RANDOM_PORT)
 class PedidoResourceTest {
 	
 	private RestTemplate restTemplate = new RestTemplate();
