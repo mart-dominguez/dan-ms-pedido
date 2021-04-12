@@ -79,6 +79,25 @@ class PedidoServiceImplUnitTest {
 	}
 
 	@Test
+	void pedidoSinStockDeberiaDarEstado2() {
+//		when(materialService.stockDisponible(p1)).thenReturn(29);
+		when(materialService.stockDisponible(any(Producto.class))).thenReturn(3);
+		// el cliente no tiene deuda
+		when(clienteService.deudaCliente(any(Obra.class))).thenReturn(0.0);
+		// el saldo negativo maximo es 10000
+		when(clienteService.maximoSaldoNegativo(any(Obra.class))).thenReturn(10000.0);
+		// el saldo negativo maximo es 10000
+		when(clienteService.situacionCrediticiaBCRA(any(Obra.class))).thenReturn(1);
+		// retorno el pedido
+		when(pedidoRepo.save(any(Pedido.class))).thenReturn(unPedido);
+//		when(clienteService.deudaCliente(argThat( (Obra o) -> o.getId()>99))).thenReturn(0.0);
+
+		Pedido pedidoResultado = pedidoService.crearPedido(unPedido);
+		assertThat(pedidoResultado.getEstado().getId().equals(2));
+		verify(pedidoRepo,times(1)).save(unPedido);
+	}
+
+	@Test
 	@Disabled("pendiente")
 	void testCrearPedidoSinStockSinDeuda() {
 		fail("Not yet implemented");
