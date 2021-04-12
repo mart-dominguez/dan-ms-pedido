@@ -7,7 +7,9 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.3.9.RELEASE</version>
 		<relativePath />
-		<!-- lookup parent from repository -->
+		<!-- lookup parent from repository
+			agrego un comentario
+		 -->
 	</parent>
 	<groupId>dan.tp2021</groupId>
 	<artifactId>dan-ms-pedido</artifactId>
